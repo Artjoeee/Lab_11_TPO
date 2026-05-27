@@ -38,12 +38,13 @@ jobs:
           VITE_BASE_PATH: /${{ github.event.repository.name }}/
 
       - name: Setup Chrome
+        id: setup-chrome
         uses: browser-actions/setup-chrome@v1
 
       - name: Run Selenium tests
         run: npm run test:ci
         env:
-          CHROME_BIN: chrome
+          CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
 
   deploy:
     name: Deploy to GitHub Pages
