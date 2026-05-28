@@ -52,7 +52,7 @@ export default function App() {
         />
 
         <button id="submit-btn" type="submit">
-          Send
+          Отправить
         </button>
       </form>
 
