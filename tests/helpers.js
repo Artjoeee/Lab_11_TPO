@@ -15,10 +15,13 @@ export async function createDriver() {
     options.setChromeBinaryPath(process.env.CHROME_BIN);
   }
 
-  return new Builder()
-    .forBrowser('chrome')
-    .setChromeOptions(options)
-    .build();
+  const builder = new Builder().forBrowser('chrome').setChromeOptions(options);
+
+  if (process.env.CHROMEDRIVER_PATH) {
+    builder.setChromeService(new chrome.ServiceBuilder(process.env.CHROMEDRIVER_PATH));
+  }
+
+  return builder.build();
 }
 
 export { By, until };
