@@ -32,19 +32,21 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build application
+      - name: Build application for tests
         run: npm run build
-        env:
-          VITE_BASE_PATH: /${{ github.event.repository.name }}/
+        # base: '/' — тесты открывают http://127.0.0.1:4173/, не /repo-name/
 
-      - name: Setup Chrome
+      - name: Setup Chrome and ChromeDriver
         id: setup-chrome
         uses: browser-actions/setup-chrome@v1
+        with:
+          install-chromedriver: true
 
       - name: Run Selenium tests
         run: npm run test:ci
         env:
           CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
+          CHROMEDRIVER_PATH: ${{ steps.setup-chrome.outputs.chromedriver-path }}
 
   deploy:
     name: Deploy to GitHub Pages
